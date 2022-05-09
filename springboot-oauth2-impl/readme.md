@@ -16,6 +16,11 @@
 1. Authentication method : BASIC
 2. Scopes : OPENID and API.READ 
 
+**Key Notes:**
+- Spring-authorization-server project (>0.2.0) is not working properly when the urls (redirection, login, oauth/* etc.) contain 'localhost' but works with the ip (127.0.0.1). So, a filter is added to redirect localhost to 127.0.0.1
+
+
+
 **PROJECT FLOW (source : https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow):**
 ![auth-sequence-auth-code](https://user-images.githubusercontent.com/40859584/167460796-0f63940b-2000-4786-9407-c9717e830dc4.png)
 
