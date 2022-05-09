@@ -6,7 +6,6 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +14,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -30,11 +30,17 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
-@Configuration(proxyBeanMethods = false)
+@Configuration
 public class AuthorizationServerConfig {
 
 	@Value("${server.port}")
 	private String serverPort;
+	
+	@Bean
+	public PasswordEncoder passwordEncoder()
+	{
+		return new BCryptPasswordEncoder(10);
+	}
 	
 	/**
 	 * Defines the filter chain for the authorization server
@@ -61,17 +67,18 @@ public class AuthorizationServerConfig {
 	 * @return
 	 */
 	@Bean
-	public RegisteredClientRepository registeredClientRepository()
+	public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder)
 	{
+		System.out.println("ENCODED PASSWORD -----> "+passwordEncoder.encode("111111"));
 		final RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
 				.clientId("hr-api-client")
-				.clientSecret("secret")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
+				.clientSecret(passwordEncoder.encode("secret"))
+				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.PASSWORD)
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-				.redirectUri("http://localhost:8080/login/oauth2/code/api-client-oidc")
-				.redirectUri("http://localhost:8080/authorized")
+				.redirectUri("http://127.0.0.1:8080/login/oauth2/code/api-client-oidc")
+				.redirectUri("http://127.0.0.1:8080/authorized")
 				.scope(OidcScopes.OPENID)
 				.scope("api.read")
 				.build();
@@ -120,8 +127,8 @@ public class AuthorizationServerConfig {
     @Bean
     public ProviderSettings providerSettings() {
     	System.out.println("AUTH SERVER PORT : "+serverPort);
-    	ProviderSettings providerSettings = new ProviderSettings();
-        return providerSettings.issuer("http://auth-server:"+serverPort);
+//    	ProviderSettings providerSettings = new ProviderSettings();
+        return ProviderSettings.builder().issuer("http://auth-server:"+serverPort).build();
     }
 	
 	

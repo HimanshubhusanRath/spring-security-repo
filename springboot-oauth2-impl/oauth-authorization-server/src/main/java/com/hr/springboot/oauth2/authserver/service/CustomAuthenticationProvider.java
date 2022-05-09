@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +18,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
-	
-	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {

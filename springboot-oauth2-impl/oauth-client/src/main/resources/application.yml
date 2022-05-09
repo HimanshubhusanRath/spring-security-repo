@@ -22,8 +22,8 @@ spring:
             client-id: hr-api-client
             client-secret: secret
             authorization-grant-type: authorization_code
-            client-authentication-method: basic
-            redirect-uri: http://localhost:8080/login/oauth2/code/{registrationId}
+            client-authentication-method: client_secret_basic
+            redirect-uri: http://127.0.0.1:8080/login/oauth2/code/{registrationId}
             scope: openid
             client-name: api-client-oidc
             
@@ -32,8 +32,8 @@ spring:
             client-id: hr-api-client
             client-secret: secret
             authorization-grant-type: authorization_code
-            client-authentication-method: basic
-            redirect-uri: http://localhost:8080/authorized
+            client-authentication-method: client_secret_basic
+            redirect-uri: http://127.0.0.1:8080/authorized
             scope: api.read
             client-name: api-client-authorization-code
             
@@ -46,7 +46,7 @@ logging:
   level:
     org:
       springframework:
-        security: DEBUG    
+        security: TRACE    
             
           
       
