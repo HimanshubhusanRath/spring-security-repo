@@ -1,17 +1,19 @@
-package com.hr.oauth.client.controller;
+package com.hr.springboot.oauth.social.login.controller;
+
+import java.security.Principal;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/users")
 public class UserController {
 
 	@GetMapping("/hello")
-	public String loginss()
+	public String hello(Principal principal)
 	{
-		return "Hello unauthorized user !!";
+		return "Hello user : "+principal.getName();
 	}
 
 }

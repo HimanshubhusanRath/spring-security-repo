@@ -1,0 +1,28 @@
+
+server:
+  port: 8080
+  
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: db2c934ce270f9345821
+            client-secret: 77245a29bf5a9fcec807c53bc9a5d3751d9a95c0
+            redirect-uri: http://localhost:8080/login/oauth2/code/{registrationId}
+            scope: user
+          google:
+            client-id: 103005737566-6jj5oulu5pur3mjabtkdsn976eiroufh.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: http://localhost:8080/login/oauth2/code/{registrationId}
+            scope: openid            
+            
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE    
+            
+          
+      
