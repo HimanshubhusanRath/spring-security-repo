@@ -22,6 +22,7 @@ import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -81,6 +82,7 @@ public class AuthorizationServerConfig {
 				.redirectUri("http://127.0.0.1:8080/authorized")
 				.scope(OidcScopes.OPENID)
 				.scope("api.read")
+				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build()) // To show consent screen to the user
 				.build();
 		
 		return new InMemoryRegisteredClientRepository(registeredClient);
